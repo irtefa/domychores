@@ -4,7 +4,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.httpserver
 from tornado.options import options, define
-from handlers.pages import Index
+from handlers.pages import IndexHandler
 
 
 PORT = sys.argv[1]
@@ -18,7 +18,7 @@ class Application(tornado.web.Application):
     def __init__(self):
 
         handlers = [
-            tornado.web.URLSpec(r'/', Index)
+            tornado.web.URLSpec(r'/', IndexHandler)
         ]
         current_dir = os.path.dirname(__file__)
 
