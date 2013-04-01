@@ -6,6 +6,8 @@ import tornado.httpserver
 from tornado.options import options, define
 from handlers.pages import IndexHandler
 from handlers.pages import AboutHandler
+from sqlalchemy.orm import scoped_session, sessionmaker
+from models import *
 
 
 PORT = sys.argv[1]
@@ -14,7 +16,7 @@ define("port", default=PORT, help="run on the given port", type=int)
 
 
 class Application(tornado.web.Application):
-    """ The primary API for DoMyChores"""
+    """ The main application class for DoMyChores"""
 
     def __init__(self):
 
@@ -30,9 +32,22 @@ class Application(tornado.web.Application):
             cookie_secret='947e5d1dc624bc99421bfc7e8ebad245'
         )
 
+        # Global connection to database
+        self.db = scoped_session(sessionmaker(bind=engine))
+
         super(Application, self).__init__(handlers, **settings)
 
+
+class BaseHandler(tornado.web.RequestHandler):
+    """The handler for all RequestHandlers to inherit from."""
+
+    @property
+    def db(self):
+        return self.application.db
+
+
 if __name__ == "__main__":
+    """Start application upon running this file."""
     tornado.options.parse_command_line()
     http_server = tornado.httpserver.HTTPServer(Application())
     http_server.listen(options.port)
