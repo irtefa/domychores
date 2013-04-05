@@ -45,4 +45,7 @@ def create_all():
     """Create all the Tables"""
     Base.metadata.create_all(engine)
 
-create_all()
+
+if __name__ == '__main__':
+    """Create all tables upon calling as script."""
+    create_all()
