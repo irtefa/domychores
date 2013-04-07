@@ -1,5 +1,4 @@
-"""A script to run all tests for all libraries in the package.
-"""
+"""A script to run all tests for all libraries in the package."""
 
 import unittest
 from signup_test import SignupHandlerTest

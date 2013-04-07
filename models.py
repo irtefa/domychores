@@ -43,6 +43,13 @@ class Chore(Base):
     worker_id = Column(Integer, ForeignKey('users.id'))
     posted_at = Column(DateTime, nullable=False)
 
+    def __init__(self, task, description, owner_id, worker_id, posted_at):
+        self.task = task
+        self.description = description
+        self.owner_id = owner_id
+        self.worker_id = worker_id
+        self.posted_at = posted_at
+
     def __repr__(self):
         """Return string representation of the Chore."""
         return "<Chore({0})>" % (self.id)

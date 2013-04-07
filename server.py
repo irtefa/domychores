@@ -36,8 +36,7 @@ class Application(tornado.web.Application):
 
         super(Application, self).__init__(handlers, **settings)
 
-    @staticmethod
-    def start():
+    def start(self):
         """Start the application."""
         server = tornado.httpserver.HTTPServer(Application())
         server.listen(Application.PORT)
@@ -45,4 +44,5 @@ class Application(tornado.web.Application):
 
 if __name__ == "__main__":
     """Start application upon running this file."""
-    Application.start()
+    app = Application()
+    app.start()
