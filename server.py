@@ -5,7 +5,7 @@ import tornado.httpserver
 from handlers.pages import IndexHandler
 from handlers.pages import AboutHandler
 from handlers.signup import Signup
-from handlers.chore import AcceptChore, CreateChore
+from handlers.chore import AcceptChore, CreateChore, RemoveChore
 from sqlalchemy.orm import scoped_session, sessionmaker
 from models import *
 
@@ -24,7 +24,8 @@ class Application(tornado.web.Application):
             # API
             tornado.web.URLSpec(r'/api/signup', Signup),
             tornado.web.URLSpec(r'/api/create_chore', CreateChore),
-            tornado.web.URLSpec(r'/api/accept_chore', AcceptChore)
+            tornado.web.URLSpec(r'/api/accept_chore', AcceptChore),
+            tornado.web.URLSpec(r'/api/remove_chore', RemoveChore)
         ]
         current_dir = os.path.dirname(__file__)
 

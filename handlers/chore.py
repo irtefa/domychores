@@ -3,26 +3,26 @@ from models import Chore
 import json
 
 
-class OwnerDeleteChore(BaseHandler):
+class RemoveChore(BaseHandler):
     """The handler for accepting a Chore"""
 
     def post(self):
         # Load the chore as a JSON object
-        chore_request = json.loads(self.request.body)
+        remove_request = json.loads(self.request.body)
         # Check if we can add the chore
-        if self.update_chore(chore_request):
+        if self.remove_chore(remove_request):
             self.write(json.dumps({"success": True}))
         else:
             self.write(json.dumps({"success": False}))
         self.finish()
 
-    def update_chore(self, chore_request):
+    def remove_chore(self, remove_request):
         # Check that parameters passed are valid
-        if not all(key in chore_request for key in ("id", "worker_id")):
+        if not all(key in remove_request for key in ("id", "owner_id")):
             return False
 
         session = self.db
-        session.query(Chore).filter(Chore.id == chore_request['id']).update({'worker_id': chore_request['worker_id']})
+        session.query(Chore).filter(Chore.id == remove_request['id'] and Chore.owner_id == remove_request['owner_id']).delete()
         # Commit the query
         try:
             session.commit()
