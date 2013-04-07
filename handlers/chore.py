@@ -3,7 +3,7 @@ from models import Chore
 import json
 
 
-class AcceptChoreHandler(BaseHandler):
+class OwnerDeleteChore(BaseHandler):
     """The handler for accepting a Chore"""
 
     def post(self):
@@ -32,7 +32,36 @@ class AcceptChoreHandler(BaseHandler):
             return False
 
 
-class CreateChoreHandler(BaseHandler):
+class AcceptChore(BaseHandler):
+    """The handler for accepting a Chore"""
+
+    def post(self):
+        # Load the chore as a JSON object
+        chore_request = json.loads(self.request.body)
+        # Check if we can add the chore
+        if self.update_chore(chore_request):
+            self.write(json.dumps({"success": True}))
+        else:
+            self.write(json.dumps({"success": False}))
+        self.finish()
+
+    def update_chore(self, chore_request):
+        # Check that parameters passed are valid
+        if not all(key in chore_request for key in ("id", "worker_id")):
+            return False
+
+        session = self.db
+        session.query(Chore).filter(Chore.id == chore_request['id']).update({'worker_id': chore_request['worker_id']})
+        # Commit the query
+        try:
+            session.commit()
+            return True
+        except:
+            session.rollback()
+            return False
+
+
+class CreateChore(BaseHandler):
     """The handler for creating a Chore."""
 
     def post(self):

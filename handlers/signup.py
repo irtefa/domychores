@@ -3,7 +3,7 @@ from models import User
 import json
 
 
-class SignupHandler(BaseHandler):
+class Signup(BaseHandler):
     """The handler for signing up Users."""
 
     def post(self):
