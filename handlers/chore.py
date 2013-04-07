@@ -3,13 +3,42 @@ from models import Chore
 import json
 
 
+class WithdrawChore(BaseHandler):
+    """The handler for withdrawing a Chore"""
+
+    def post(self):
+        # Load the chore as a JSON object
+        withdraw_request = json.loads(self.request.body)
+        # Check if we can withdraw from the chore
+        if self.withdraw_chore(withdraw_request):
+            self.write(json.dumps({"success": True}))
+        else:
+            self.write(json.dumps({"success": False}))
+        self.finish()
+
+    def withdraw_chore(self, withdraw_request):
+        # Check that parameters passed are valid
+        if not all(key in withdraw_request for key in ("id", "worker_id")):
+            return False
+
+        session = self.db
+        session.query(Chore).filter(Chore.id == withdraw_request['id']).update({'worker_id': None})
+        # Commit the query
+        try:
+            session.commit()
+            return True
+        except:
+            session.rollback()
+            return False
+
+
 class RemoveChore(BaseHandler):
-    """The handler for accepting a Chore"""
+    """The handler for removing a Chore"""
 
     def post(self):
         # Load the chore as a JSON object
         remove_request = json.loads(self.request.body)
-        # Check if we can add the chore
+        # Check if we can remove a chore
         if self.remove_chore(remove_request):
             self.write(json.dumps({"success": True}))
         else:
