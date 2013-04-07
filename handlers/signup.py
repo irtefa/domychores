@@ -1,11 +1,11 @@
-from tornado.web import RequestHandler
+from base import BaseHandler
 import simplejson as json
 
 
-class SignupHandler(RequestHandler):
+class SignupHandler(BaseHandler):
+    """The handler for signing up Users."""
 
     def post(self):
-        #self.render("about.html")
         body = json.loads(self.request.body)
         user = body["user"]
         if self.add_user(user):

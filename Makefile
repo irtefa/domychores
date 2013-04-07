@@ -1,7 +1,7 @@
 .PHONY: all init clean
 
 all: clean
-	python server.py 8888
+	python server.py
 
 db:
 	python models.py
