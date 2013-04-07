@@ -9,12 +9,12 @@ from tornado.testing import AsyncHTTPTestCase
 from functools import partial
 
 
-class SignupHandlerTest(AsyncHTTPTestCase):
+class SignupTest(AsyncHTTPTestCase):
     """A TestCase containing various tests for the SignupHandler."""
 
     def setUp(self):
         """Set up to be done before each test."""
-        super(SignupHandlerTest, self).setUp()
+        super(SignupTest, self).setUp()
         self.post_request = partial(self.fetch, "/api/signup", method="POST")
 
     def get_app(self):
