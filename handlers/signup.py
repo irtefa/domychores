@@ -1,7 +1,8 @@
-from tornado.web import RequestHandler
+from base import BaseHandler
 
 
-class SignupHandler(RequestHandler):
+class SignupHandler(BaseHandler):
+    """The handler for signing up Users."""
 
-    def post(self):
+    #def post(self):
         #self.render("about.html")

@@ -2,11 +2,13 @@
 """
 
 import unittest
+from signup_test import SignupHandlerTest
+
 
 def create_suite():
     """Creates a new TestSuite to run all tests in the module."""
     suite = unittest.TestSuite()
-    #suite.addTest(UNIT_TEST_CLASS)
+    suite.addTest(SignupHandlerTest())
     return suite
 
 if __name__ == '__main__':
