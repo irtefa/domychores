@@ -10,7 +10,7 @@ from functools import partial
 
 
 class SignupTest(AsyncHTTPTestCase):
-    """A TestCase containing various tests for the SignupHandler."""
+    """A TestCase containing various tests for the SignupHandler request handler."""
 
     def setUp(self):
         """Set up to be done before each test."""
