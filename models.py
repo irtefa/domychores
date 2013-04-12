@@ -1,5 +1,6 @@
+from datetime import datetime
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -41,13 +42,13 @@ class Chore(Base):
     description = Column(String(250), nullable=False)
     owner_id = Column(Integer, ForeignKey('users.id'))
     worker_id = Column(Integer, ForeignKey('users.id'))
-    posted_at = Column(DateTime, nullable=False)
+    posted_at = Column(String(50), nullable=False)
 
-    def __init__(self, task, description, owner_id, posted_at):
+    def __init__(self, task, description, owner_id):
         self.task = task
         self.description = description
         self.owner_id = owner_id
-        self.posted_at = posted_at
+        self.posted_at = datetime.now().isoformat()
 
     def __repr__(self):
         """Return string representation of the Chore."""

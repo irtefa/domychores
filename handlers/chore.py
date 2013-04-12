@@ -105,17 +105,18 @@ class CreateChore(BaseHandler):
 
     def add_chore(self, chore):
         # Check that parameters passed are valid
-        if not all(key in chore for key in ("task", "description", "owner_id", "posted_at")):
+        if not all(key in chore for key in ("task", "description", "owner_id")):
             return False
 
         # Setup SQL command to create a chore
         session = self.db
-        add_chore_info = Chore(chore['task'], chore['description'], chore['owner_id'], chore['posted_at'])
+        add_chore_info = Chore(chore['task'], chore['description'], chore['owner_id'])
         # Add it to the session
         session.add(add_chore_info)
         # Commit the query
         try:
             session.commit()
+            return True
         except:
             session.rollback()
-        return True
+            return False
