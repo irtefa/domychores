@@ -2,7 +2,6 @@ import os
 import tornado.ioloop
 import tornado.web
 import tornado.httpserver
-from handlers.pages import IndexHandler
 from handlers.user import Signup, GetUser
 from handlers.chore import GetChore, AcceptChore, CreateChore, RemoveChore, WithdrawChore
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -17,7 +16,7 @@ class Application(tornado.web.Application):
     def __init__(self):
 
         handlers = [
-            tornado.web.URLSpec(r'/', IndexHandler),
+            tornado.web.URLSpec(r'/static/(.*)', tornado.web.StaticFileHandler, {"path": "static/index.html"}),
 
             # API
             tornado.web.URLSpec(r'/api/user/new', Signup),
@@ -33,7 +32,6 @@ class Application(tornado.web.Application):
         current_dir = os.path.dirname(__file__)
 
         settings = dict(
-            template_path=os.path.join(current_dir, 'templates'),
             static_path=os.path.join(current_dir, 'static'),
             cookie_secret='947e5d1dc624bc99421bfc7e8ebad245'
         )
