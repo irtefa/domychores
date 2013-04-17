@@ -30,7 +30,7 @@ class User(Base):
 
     def __repr__(self):
         """Return string representation of the User."""
-        return "<User({0} {1})>" % (self.first_name, self.last_name)
+        return "<User({0} {1})>".format(self.first_name, self.last_name)
 
 
 class Chore(Base):
@@ -53,7 +53,7 @@ class Chore(Base):
 
     def __repr__(self):
         """Return string representation of the Chore."""
-        return "<Chore({0})>" % (self.id)
+        return "<Chore({0})>".format(self.id)
 
 
 def create_all():

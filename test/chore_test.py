@@ -22,7 +22,7 @@ class ChoreTest(AsyncHTTPTestCase):
         """Set up to be done before each test."""
         super(ChoreTest, self).setUp()
         self.db = self.get_app().db
-        self.user_api = partial(self.fetch, "/api/signup", method="POST")
+        self.user_api = partial(self.fetch, "/api/user/new", method="POST")
 
         post_data = {"first_name": "John",
                      "last_name": "Doe",
@@ -43,10 +43,10 @@ class ChoreTest(AsyncHTTPTestCase):
                      "address": "789 Rishi Pwns Irtefa Lane"}
         self.user_api(body=json.dumps(post_data))
 
-        self.create_api = partial(self.fetch, "/api/create_chore", method="POST")
-        self.accept_api = partial(self.fetch, "/api/accept_chore", method="POST")
-        self.withdraw_api = partial(self.fetch, "/api/remove_chore", method="POST")
-        self.remove_api = partial(self.fetch, "/api/withdraw_chore", method="POST")
+        self.create_api = partial(self.fetch, "/api/chore/new", method="POST")
+        self.accept_api = partial(self.fetch, "/api/chore/accept", method="POST")
+        self.withdraw_api = partial(self.fetch, "/api/chore/delete", method="POST")
+        self.remove_api = partial(self.fetch, "/api/chore/withdraw", method="POST")
 
     def get_app(self):
         """AsyncHTTPTestCase method to get the application."""

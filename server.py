@@ -3,9 +3,8 @@ import tornado.ioloop
 import tornado.web
 import tornado.httpserver
 from handlers.pages import IndexHandler
-from handlers.pages import AboutHandler
-from handlers.signup import Signup
-from handlers.chore import AcceptChore, CreateChore, RemoveChore, WithdrawChore
+from handlers.user import Signup, GetUser
+from handlers.chore import GetChore, AcceptChore, CreateChore, RemoveChore, WithdrawChore
 from sqlalchemy.orm import scoped_session, sessionmaker
 from models import *
 
@@ -19,14 +18,17 @@ class Application(tornado.web.Application):
 
         handlers = [
             tornado.web.URLSpec(r'/', IndexHandler),
-            tornado.web.URLSpec(r'/about', AboutHandler),
 
             # API
-            tornado.web.URLSpec(r'/api/signup', Signup),
-            tornado.web.URLSpec(r'/api/create_chore', CreateChore),
-            tornado.web.URLSpec(r'/api/accept_chore', AcceptChore),
-            tornado.web.URLSpec(r'/api/remove_chore', RemoveChore),
-            tornado.web.URLSpec(r'/api/withdraw_chore', WithdrawChore)
+            tornado.web.URLSpec(r'/api/user/new', Signup),
+            tornado.web.URLSpec(r'/api/user/([0-9]*)', GetUser),
+
+            tornado.web.URLSpec(r'/api/chore/([0-9]*)', GetChore),
+            tornado.web.URLSpec(r'/api/chore/new', CreateChore),
+            tornado.web.URLSpec(r'/api/chore/delete', RemoveChore),
+
+            tornado.web.URLSpec(r'/api/chore/accept', AcceptChore),
+            tornado.web.URLSpec(r'/api/chore/withdraw', WithdrawChore)
         ]
         current_dir = os.path.dirname(__file__)
 
