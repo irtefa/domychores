@@ -13,4 +13,4 @@ init:
 	pip install -r requirements.txt
 
 clean:
-	rm -rf dist *egg*
+	rm -rf dist *egg* *.pyc
