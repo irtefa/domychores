@@ -15,7 +15,7 @@ class SignupTest(AsyncHTTPTestCase):
     def setUp(self):
         """Set up to be done before each test."""
         super(SignupTest, self).setUp()
-        self.post_request = partial(self.fetch, "/api/signup", method="POST")
+        self.post_request = partial(self.fetch, "/api/user/new", method="POST")
 
     def get_app(self):
         """AsyncHTTPTestCase method to get the application."""
