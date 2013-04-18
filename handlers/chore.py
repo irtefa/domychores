@@ -3,6 +3,26 @@ from models import Chore
 import json
 
 
+class BrowseChores(BaseHandler):
+    """The handler for getting all Chores."""
+
+    def get(self):
+        self.set_header("Content-Type", "application/json")
+        session = self.db
+        results = session.query(Chore).all()
+        chores = []
+        for chore in results:
+            chore_dict = {"id": chore.id,
+                          "task": chore.task,
+                          "description": chore.description,
+                          "owner_id": chore.owner_id,
+                          "worker_id": chore.worker_id,
+                          "posted_at": chore.posted_at}
+            chores.append(chore_dict)
+        self.write(json.dumps(chores))
+        self.finish()
+
+
 class GetChore(BaseHandler):
     """The handler for getting information for a given Chore."""
 
@@ -63,24 +83,24 @@ class CreateChore(BaseHandler):
 class RemoveChore(BaseHandler):
     """The handler for removing a Chore"""
 
-    def post(self):
+    def post(self, chore_id):
         self.set_header("Content-Type", "application/json")
         # Load the chore as a JSON object
         remove_request = json.loads(self.request.body)
         # Check if we can remove a chore
-        if self.remove_chore(remove_request):
+        if self.remove_chore(chore_id, remove_request):
             self.write(json.dumps({"success": True}))
         else:
             self.write(json.dumps({"success": False}))
         self.finish()
 
-    def remove_chore(self, remove_request):
+    def remove_chore(self, chore_id, remove_request):
         # Check that parameters passed are valid
-        if not all(key in remove_request for key in ("id", "owner_id")):
+        if not all(key in remove_request for key in ("owner_id")):
             return False
 
         session = self.db
-        session.query(Chore).filter(Chore.id == remove_request['id'] and Chore.owner_id == remove_request['owner_id']).delete()
+        session.query(Chore).filter(Chore.id == chore_id and Chore.owner_id == remove_request['owner_id']).delete()
         # Commit the query
         try:
             session.commit()
@@ -93,24 +113,24 @@ class RemoveChore(BaseHandler):
 class AcceptChore(BaseHandler):
     """The handler for accepting a Chore"""
 
-    def post(self):
+    def post(self, chore_id):
         self.set_header("Content-Type", "application/json")
         # Load the chore as a JSON object
         chore_request = json.loads(self.request.body)
         # Check if we can add the chore
-        if self.update_chore(chore_request):
+        if self.update_chore(chore_id, chore_request):
             self.write(json.dumps({"success": True}))
         else:
             self.write(json.dumps({"success": False}))
         self.finish()
 
-    def update_chore(self, chore_request):
+    def update_chore(self, chore_id, chore_request):
         # Check that parameters passed are valid
-        if not all(key in chore_request for key in ("id", "worker_id")):
+        if not all(key in chore_request for key in ("worker_id")):
             return False
 
         session = self.db
-        session.query(Chore).filter(Chore.id == chore_request['id']).update({'worker_id': chore_request['worker_id']})
+        session.query(Chore).filter(Chore.id == chore_id).update({'worker_id': chore_request['worker_id']})
         # Commit the query
         try:
             session.commit()
@@ -123,24 +143,24 @@ class AcceptChore(BaseHandler):
 class WithdrawChore(BaseHandler):
     """The handler for withdrawing a Chore"""
 
-    def post(self):
+    def post(self, chore_id):
         self.set_header("Content-Type", "application/json")
         # Load the chore as a JSON object
         withdraw_request = json.loads(self.request.body)
         # Check if we can withdraw from the chore
-        if self.withdraw_chore(withdraw_request):
+        if self.withdraw_chore(chore_id, withdraw_request):
             self.write(json.dumps({"success": True}))
         else:
             self.write(json.dumps({"success": False}))
         self.finish()
 
-    def withdraw_chore(self, withdraw_request):
+    def withdraw_chore(self, chore_id, withdraw_request):
         # Check that parameters passed are valid
-        if not all(key in withdraw_request for key in ("id", "worker_id")):
+        if not all(key in withdraw_request for key in ("worker_id")):
             return False
 
         session = self.db
-        session.query(Chore).filter(Chore.id == withdraw_request['id']).update({'worker_id': None})
+        session.query(Chore).filter(Chore.id == chore_id).update({'worker_id': None})
         # Commit the query
         try:
             session.commit()
