@@ -17,6 +17,7 @@ class Application(tornado.web.Application):
 
         handlers = [
             tornado.web.URLSpec(r'/static/(.*)', tornado.web.StaticFileHandler, {"path": "static/index.html"}),
+            tornado.web.URLSpec(r'/', tornado.web.RedirectHandler, {"url": "/static/index.html"}),
 
             # API
             tornado.web.URLSpec(r'/api/user/new', Signup),
