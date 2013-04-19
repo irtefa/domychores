@@ -11,7 +11,7 @@ $(function() {
         url: "/api/chores"
     });
 
-    window.Chores = new ChoreList;
+    window.Chores = new ChoreList();
 
     window.ChoreView = Backbone.View.extend({
         tagName: "li",
@@ -50,5 +50,5 @@ $(function() {
         }
     });
 
-    window.App = new AppView;
+    window.App = new AppView();
 });
