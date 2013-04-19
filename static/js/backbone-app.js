@@ -46,7 +46,7 @@ $(function() {
 
         addOne: function(chore) {
             var view = new ChoreView({model: chore});
-            this.$("#chore-list").append(view.render().el);
+            this.$(".chore-list").append(view.render().el);
         }
     });
 
