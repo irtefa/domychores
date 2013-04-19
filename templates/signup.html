@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>DoMyChores</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DoMyChores for CS 242 at UIUC">
+    <meta name="author" content="Rishi Bajekal,Mohd Irtefa">
+    <link href="{{ static_url("css/bootstrap.min.css") }}" rel="stylesheet" />
+    <link href="{{ static_url("css/bootstrap-responsive.min.css") }}" rel="stylesheet" />
+
+    <!-- IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="{{ static_url("ico/favicon.ico") }}">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ static_url("ico/apple-touch-icon-144-precomposed.png") }}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ static_url("ico/apple-touch-icon-114-precomposed.png") }}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ static_url("ico/apple-touch-icon-72-precomposed.png") }}">
+    <link rel="apple-touch-icon-precomposed" href="{{ static_url("ico/apple-touch-icon-57-precomposed.png") }}">
+
+</head>
+<body>
+
+    <!-- ########################################################################################################## -->
+    <!-- ########################################### APP INTERFACE ################################################ -->
+    <!-- ########################################################################################################## -->
+
+    <div class="container">
+
+        <div class="" id="loginModal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>DoMyChores</h3>
+            </div>
+            <div class="modal-body">
+                <div class="well">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#login-tab" data-toggle="tab">Login</a></li>
+                        <li><a href="#signup-tab" data-toggle="tab">Create Account</a></li>
+                    </ul>
+                    <div id="content" class="tab-content">
+                        <div class="tab-pane active in" id="login-tab">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div id="legend">
+                                       <legend class="">Login</legend>
+                                     </div>
+                                     <div class="control-group">
+                                        <!-- Email -->
+                                        <label class="control-label" for="login-email">Email</label>
+                                        <div class="controls">
+                                            <input type="text" id="login-email" name="email" placeholder="name@example.com" class="input-xlarge">
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                        <!-- Password-->
+                                        <label class="control-label" for="login-password">Password</label>
+                                        <div class="controls">
+                                            <input type="password" id="login-password" name="password" placeholder="password" class="input-xlarge">
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group">
+                                    <!-- Button -->
+                                        <div class="controls">
+                                            <button id="login-btn" class="btn btn-success">Login</button>
+                                        </div>
+                                    </div>
+
+                                    <span id="login-invalid" class="hidden label label-important">The provided information is invalid. Please make sure the whole form is filled out.</span>
+                                    <span id="login-error" class="hidden label label-important">Unable to login. Please check to make sure your email and password are correct and try again.</span>
+                                </fieldset>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="signup-tab">
+                            <form id="tab">
+                                <div id="legend">
+                                   <legend class="">Signup</legend>
+                                 </div>
+                                <fieldset>
+                                    <label>First Name</label>
+                                    <input id="signup-fname" type="text" class="input-large">
+                                    <label>Last Name</label>
+                                    <input id="signup-lname" type="text"class="input-large">
+                                    <label>Email</label>
+                                    <input id="signup-email" type="text"class="input-large">
+                                    <label>Password</label>
+                                    <input id="signup-password" type="password" class="input-large">
+                                    <label>Address</label>
+                                    <textarea id="signup-address" rows="3" class="input-large"></textarea>
+
+                                    <div>
+                                        <button id="signup-btn" class="btn btn-primary">Create Account</button>
+                                    </div>
+
+                                    <span id="signup-invalid" class="hidden label label-important">The provided information is invalid. Please make sure the whole form is filled out.</span>
+                                    <span id="signup-error" class="hidden label label-important">The email provided is already in use by an existing user. Please try again using a different email.</span>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ########################################################################################################## -->
+    <!-- ############################################ JAVASCRIPT ################################################## -->
+    <!-- ########################################################################################################## -->
+    <script src="{{ static_url("js/libs/json2.js") }}"></script>
+    <script src="{{ static_url("js/libs/jquery-1.9.1.js") }}"></script>
+    <script src="{{ static_url("js/libs/bootstrap.min.js") }}"></script>
+    <script src="{{ static_url("js/signup.js") }}"></script>
+    <script src="{{ static_url("js/login.js") }}"></script>
+
+</body>
+
+</html>

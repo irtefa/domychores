@@ -3,6 +3,38 @@ from models import User
 import json
 
 
+class Login(BaseHandler):
+    """The handler for logging Users in."""
+
+    def post(self):
+        self.set_header("Content-Type", "application/json")
+        user = json.loads(self.request.body)
+        if self.is_existing(user):
+            self.set_secure_cookie('dmc', json.dumps({"email": user["email"]}))
+            self.write(json.dumps({"success": True}))
+        else:
+            self.write(json.dumps({"success": False}))
+        self.finish()
+
+    def is_existing(self, user):
+        # Check that parameters passed are valid
+        if not all(key in user for key in ("email", "password")):
+            return False
+
+        # Check if the user alredy exists
+        session = self.db
+        existing_query = session.query(User).filter(User.email == user['email'])
+        count = existing_query.count()
+
+        # If user exists, check for password match
+        if count == 1:
+            existing_user = existing_query.one()
+            if existing_user and existing_user.password == user["password"]:
+                return True
+        # Return false if user doesn't already exist or password don't match
+        return False
+
+
 class Signup(BaseHandler):
     """The handler for signing up Users."""
 
@@ -10,6 +42,7 @@ class Signup(BaseHandler):
         self.set_header("Content-Type", "application/json")
         user = json.loads(self.request.body)
         if self.add_user(user):
+            self.set_secure_cookie('dmc', json.dumps({"email": user["email"]}))
             self.write(json.dumps({"success": True}))
         else:
             self.write(json.dumps({"success": False}))

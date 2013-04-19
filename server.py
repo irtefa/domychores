@@ -2,7 +2,8 @@ import os
 import tornado.ioloop
 import tornado.web
 import tornado.httpserver
-from handlers.user import Signup, GetUser
+from handlers.base import MainHandler, LoginHandler
+from handlers.user import Login, Signup, GetUser
 from handlers.chore import BrowseChores, GetChore, AcceptChore, CreateChore, RemoveChore, WithdrawChore
 from sqlalchemy.orm import scoped_session, sessionmaker
 from models import *
@@ -16,26 +17,30 @@ class Application(tornado.web.Application):
     def __init__(self):
 
         handlers = [
-            tornado.web.URLSpec(r'/static/(.*)', tornado.web.StaticFileHandler, {"path": "static/index.html"}),
-            tornado.web.URLSpec(r'/', tornado.web.RedirectHandler, {"url": "/static/index.html"}),
+            tornado.web.URLSpec(r'/', MainHandler),
+            tornado.web.URLSpec(r'/login', LoginHandler),
 
             # API
-            tornado.web.URLSpec(r'/api/users', Signup),
+            tornado.web.URLSpec(r'/api/signup', Signup),
+            tornado.web.URLSpec(r'/api/login', Login),
+
             tornado.web.URLSpec(r'/api/users/([0-9]*)', GetUser),
 
             tornado.web.URLSpec(r'/api/chores', BrowseChores),
             tornado.web.URLSpec(r'/api/chores/([0-9]*)', GetChore),
-            tornado.web.URLSpec(r'/api/chores', CreateChore),
-            tornado.web.URLSpec(r'/api/chores/([0-9]*)', RemoveChore),
+            #tornado.web.URLSpec(r'/api/chores', CreateChore),
+            #tornado.web.URLSpec(r'/api/chores/([0-9]*)', RemoveChore),
 
-            tornado.web.URLSpec(r'/api/chores/([0-9]*)', AcceptChore),
-            tornado.web.URLSpec(r'/api/chores/([0-9]*)', WithdrawChore)
+            #tornado.web.URLSpec(r'/api/chores/([0-9]*)', AcceptChore),
+            #tornado.web.URLSpec(r'/api/chores/([0-9]*)', WithdrawChore)
         ]
         current_dir = os.path.dirname(__file__)
 
         settings = dict(
+            login_url="/login",
             static_path=os.path.join(current_dir, 'static'),
-            cookie_secret='947e5d1dc624bc99421bfc7e8ebad245'
+            template_path=os.path.join(current_dir, "templates"),
+            cookie_secret="33844436e60a85dcafbef8b66efbf1db"
         )
 
         # Global connection to database
