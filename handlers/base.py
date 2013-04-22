@@ -1,4 +1,5 @@
 from tornado.web import RequestHandler, authenticated
+import json
 
 
 class BaseHandler(RequestHandler):
@@ -18,7 +19,8 @@ class MainHandler(BaseHandler):
 
     @authenticated
     def get(self):
-        self.render("index.html")
+        user = json.loads(self.get_current_user())
+        self.render("index.html", user_id=user["id"])
 
 
 class LoginHandler(BaseHandler):

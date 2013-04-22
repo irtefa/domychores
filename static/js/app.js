@@ -1,37 +1,47 @@
-window.App = Ember.Application.create({
-    LOG_TRANSITIONS: true
-});
+window.Chores = new ChoreList;
 
-DS.RESTAdapter.reopen({
-  namespace: 'api'
-});
+window.ChoreView = Backbone.View.extend({
+    tagName: "p",
 
-App.Store = DS.Store.extend({
-    revision: 12
-});
+    template: _.template($("#chore-template").html()),
 
-App.Chore = DS.Model.extend({
-    id: DS.attr('number'),
-    task: DS.attr('string'),
-    description: DS.attr('string'),
-    ownerId: DS.attr('number'),
-    workerId: DS.attr('number'),
-    postedAt: DS.attr('date')
-});
-
-App.Router.map(function() {
-    this.resource('chores', {path: 'chores'});
-    this.route('about');
-});
-
-App.ChoresRoute = Ember.Route.extend({
-    setupController: function(controller, model) {
-        controller.set('content', model);
+    events: {
+        "click":    "signup"
     },
-    model: function() {
-        return App.Chore.find();
+
+    signup: function() {
+        console.log("CLICKED: " + this.model.get('task'));
+    },
+
+    initialize: function() {
+        _.bindAll(this, "render");
+        this.model.bind('change', this.render);
+    },
+
+    render: function() {
+        this.$el.html(this.template(this.model.toJSON()));
+        this.$el.find('.timeago').timeago();
+        return this;
     }
 });
 
+window.AppView = Backbone.View.extend({
+    el: $("#main"),
 
+    initialize: function() {
+        _.bindAll(this, "render");
+        Chores.bind("all", this.render);
+        Chores.fetch();
+    },
 
+    render: function() {
+        Chores.each(this.addOne);
+    },
+
+    addOne: function(chore) {
+        var view = new ChoreView({model: chore});
+        this.$("#chore-list").append(view.render().el);
+    }
+});
+
+window.App = new AppView;
