@@ -3,23 +3,32 @@ from models import User
 import json
 
 
+class Logout(BaseHandler):
+    """The handler for logging Users out."""
+
+    def get(self):
+        self.clear_cookie("dmc")
+        self.redirect("/")
+
+
 class Login(BaseHandler):
     """The handler for logging Users in."""
 
     def post(self):
         self.set_header("Content-Type", "application/json")
         user = json.loads(self.request.body)
-        if self.is_existing(user):
-            self.set_secure_cookie('dmc', json.dumps({"email": user["email"]}))
+        existing_user = self.get_existing(user)
+        if existing_user is not None:
+            self.set_secure_cookie('dmc', json.dumps({"id": existing_user.id, "email": existing_user.email}))
             self.write(json.dumps({"success": True}))
         else:
             self.write(json.dumps({"success": False}))
         self.finish()
 
-    def is_existing(self, user):
+    def get_existing(self, user):
         # Check that parameters passed are valid
         if not all(key in user for key in ("email", "password")):
-            return False
+            return None
 
         # Check if the user alredy exists
         session = self.db
@@ -30,9 +39,9 @@ class Login(BaseHandler):
         if count == 1:
             existing_user = existing_query.one()
             if existing_user and existing_user.password == user["password"]:
-                return True
+                return existing_user
         # Return false if user doesn't already exist or password don't match
-        return False
+        return None
 
 
 class Signup(BaseHandler):
