@@ -83,7 +83,7 @@ class CreateChore(BaseHandler):
 class RemoveChore(BaseHandler):
     """The handler for removing a Chore"""
 
-    def post(self, chore_id):
+    def delete(self, chore_id):
         self.set_header("Content-Type", "application/json")
         # Load the chore as a JSON object
         remove_request = json.loads(self.request.body)
