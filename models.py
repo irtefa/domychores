@@ -80,8 +80,8 @@ class Payment(Base):
     __tablename__ = "payments"
 
     id = Column(Integer, primary_key=True)
-    chore_id = Column(Integer, ForeignKey('chores.id'))
-    worker_id = Column(Integer, ForeignKey('users.id'))
+    chore_id = Column(Integer)
+    worker_id = Column(Integer)
 
     def __init__(self, worker_id, chore_id):
         self.chore_id = chore_id
