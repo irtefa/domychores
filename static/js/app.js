@@ -6,7 +6,12 @@ window.ChoreView = Backbone.View.extend({
     template: _.template($("#chore-template").html()),
 
     events: {
-        "click":    "signup"
+        "click .signup":    "signup",
+        "click .complete": "payUser"
+    },
+
+    payUser: function() {
+        console.log("hello");
     },
 
     signup: function() {
