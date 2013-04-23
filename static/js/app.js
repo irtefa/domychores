@@ -6,15 +6,27 @@ window.ChoreView = Backbone.View.extend({
     template: _.template($("#chore-template").html()),
 
     events: {
-        "click .signup":    "signup",
+        "click .accept":    "accept",
         "click .complete": "payUser"
     },
 
     payUser: function() {
-        console.log("hello");
-    },
+        $.ajax({
+            url: '/api/pay/' + this.model.get('id'),
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(data) {
+                if (data.success) {
+                    window.location.replace("/");
+                }
+                else {
+                    console.log("could not pay worker");
+                }
+            }
+        });    },
 
-    signup: function() {
+    accept: function() {
         $.ajax({
             url: '/api/chore/' + this.model.get('id'),
             type: 'POST',
@@ -24,8 +36,21 @@ window.ChoreView = Backbone.View.extend({
                 if (data.success) {
                     window.location.replace("/");
                 }
+            }
+        });
+
+        $.ajax({
+            url: '/api/credit/' + this.model.get('id'),
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({"owner_id": this.model.get('owner_id')}),
+            success: function(data) {
+                if (data.success) {
+                    window.location.replace("/");
+                }
                 else {
-                    console.log("could not accept chore");
+                    console.log("could not credit owner");
                 }
             }
         });

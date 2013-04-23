@@ -56,6 +56,42 @@ class Chore(Base):
         return "<Chore({0})>".format(self.id)
 
 
+class Credit(Base):
+    """The Credit table to represent credits of the application."""
+
+    __tablename__ = "credits"
+
+    id = Column(Integer, primary_key=True)
+    chore_id = Column(Integer, ForeignKey('chores.id'))
+    owner_id = Column(Integer, ForeignKey('users.id'))
+
+    def __init__(self, owner_id, chore_id):
+        self.chore_id = chore_id
+        self.owner_id = owner_id
+
+    def __repr__(self):
+        """Return string representation of the Credit."""
+        return "<Credit({0} {1})>".format(self.chore_id, self.owner_id)
+
+
+class Payment(Base):
+    """The Payment table to represent payments of the application."""
+
+    __tablename__ = "payments"
+
+    id = Column(Integer, primary_key=True)
+    chore_id = Column(Integer, ForeignKey('chores.id'))
+    worker_id = Column(Integer, ForeignKey('users.id'))
+
+    def __init__(self, worker_id, chore_id):
+        self.chore_id = chore_id
+        self.worker_id = worker_id
+
+    def __repr__(self):
+        """Return string representation of the Credit."""
+        return "<Credit({0} {1})>".format(self.chore_id, self.worker_id)
+
+
 def create_all():
     """Create all the Tables"""
     Base.metadata.create_all(engine)
