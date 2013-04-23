@@ -115,22 +115,17 @@ class AcceptChore(BaseHandler):
 
     def post(self, chore_id):
         self.set_header("Content-Type", "application/json")
-        # Load the chore as a JSON object
-        chore_request = json.loads(self.request.body)
         # Check if we can add the chore
-        if self.update_chore(chore_id, chore_request):
+        if self.update_chore(chore_id):
             self.write(json.dumps({"success": True}))
         else:
             self.write(json.dumps({"success": False}))
         self.finish()
 
-    def update_chore(self, chore_id, chore_request):
-        # Check that parameters passed are valid
-        if not all(key in chore_request for key in ("worker_id")):
-            return False
-
+    def update_chore(self, chore_id):
+        user = json.loads(self.get_secure_cookie("dmc"))
         session = self.db
-        session.query(Chore).filter(Chore.id == chore_id).update({'worker_id': chore_request['worker_id']})
+        session.query(Chore).filter(Chore.id == chore_id).update({'worker_id': user["id"]})
         # Commit the query
         try:
             session.commit()

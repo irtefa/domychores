@@ -1,4 +1,4 @@
-window.Chores = new ChoreList;
+window.Chores = new ChoreList();
 
 window.ChoreView = Backbone.View.extend({
     tagName: "p",
@@ -10,7 +10,20 @@ window.ChoreView = Backbone.View.extend({
     },
 
     signup: function() {
-        console.log("CLICKED: " + this.model.get('task'));
+        $.ajax({
+            url: '/api/chore/' + this.model.get('id'),
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(data) {
+                if (data.success) {
+                    window.location.replace("/");
+                }
+                else {
+                    console.log("could not accept chore");
+                }
+            }
+        });
     },
 
     initialize: function() {
@@ -44,4 +57,4 @@ window.AppView = Backbone.View.extend({
     }
 });
 
-window.App = new AppView;
+window.App = new AppView();

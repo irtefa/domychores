@@ -33,7 +33,7 @@ class Application(tornado.web.Application):
             tornado.web.URLSpec(r'/api/chores', CreateChore),               # POST
             tornado.web.URLSpec(r'/api/chores/([0-9]*)', RemoveChore),      # DELETE
 
-            #tornado.web.URLSpec(r'/api/chores/([0-9]*)', AcceptChore),      # PUT
+            tornado.web.URLSpec(r'/api/chore/([0-9]*)', AcceptChore),      # PUT
             #tornado.web.URLSpec(r'/api/chores/([0-9]*)', WithdrawChore)     # PUT
         ]
         current_dir = os.path.dirname(__file__)
