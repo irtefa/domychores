@@ -40,7 +40,7 @@ class Login(BaseHandler):
             existing_user = existing_query.one()
             if existing_user and existing_user.password == user["password"]:
                 return existing_user
-        # Return false if user doesn't already exist or password don't match
+        # If user doesn't already exist or password don't match
         return None
 
 
@@ -50,8 +50,9 @@ class Signup(BaseHandler):
     def post(self):
         self.set_header("Content-Type", "application/json")
         user = json.loads(self.request.body)
-        if self.add_user(user):
-            self.set_secure_cookie('dmc', json.dumps({"email": user["email"]}))
+        new_user = self.add_user(user)
+        if new_user is not None:
+            self.set_secure_cookie('dmc', json.dumps({"id": new_user.id, "email": new_user.email}))
             self.write(json.dumps({"success": True}))
         else:
             self.write(json.dumps({"success": False}))
@@ -60,21 +61,21 @@ class Signup(BaseHandler):
     def add_user(self, user):
         # Check that parameters passed are valid
         if not all(key in user for key in ("first_name", "last_name", "email", "password", "address")):
-            return False
+            return None
 
         # Check if the user alredy exists
         session = self.db
         user_count = session.query(User).filter(User.email == user['email']).count()
 
-       # If user does not exist add the user
-        if user_count < 1:
+        # If user does not exist add the user
+        if user_count == 0:
             add_user_info = User(user['first_name'], user['last_name'], user['email'], user['password'], user['address'])
             session.add(add_user_info)
             session.commit()
-            return True
-        # Return false if user already exists
+            return add_user_info
+        # If user already exists
         else:
-            return False
+            return None
 
 
 class GetUser(BaseHandler):
