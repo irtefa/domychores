@@ -1,6 +1,10 @@
 Please follow these steps to check if user signup works:
 
-xhr = new XMLHttpRequest();
-xhr.open('POST', '/api/signup');
-xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-xhr.send(JSON.stringify({'first_name':'Mohd','last_name': 'Irteza', 'email': 'irteza.com', 'password': 'hash', 'address': 'town'}));
+1.) Clear cookies and go to "/" to check that you cannot see the Javascript MVC app.
+2.) Create a new account.
+3.) Check that you are now forwarded to "/" without a problem.
+4.) Clear your cookies again.
+5.) Go to "/" to check that you cannot see the Javascript MVC app.
+6.) Log in using the account you just created.
+7.) Check that you are now forwared to "/" without a problem.
+8.) Refresh the page and make sure you are still at "/".
