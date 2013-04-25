@@ -24,7 +24,8 @@ window.ChoreView = Backbone.View.extend({
                     console.log("could not pay worker");
                 }
             }
-        });    },
+        });
+   },
 
     accept: function() {
         $.ajax({
@@ -62,8 +63,18 @@ window.ChoreView = Backbone.View.extend({
     },
 
     render: function() {
+        var id = $('#user-id').html();
         this.$el.html(this.template(this.model.toJSON()));
         this.$el.find('.timeago').timeago();
+        var owner_id = this.$el.find('#owner_id').html();
+        // hides accept button if this is your chore
+        if(id === owner_id) {
+            this.$el.find('.accept').addClass("hidden");
+        }
+        // hides completed button if you are not the owner of that chore
+        if(id != owner_id) {
+            this.$el.find('.complete').addClass("hidden");
+        }
         return this;
     }
 });
