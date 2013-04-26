@@ -33,11 +33,12 @@ class PayWorker(BaseHandler):
         # Add it to the session
         session.add(pay_worker_info)
         # Commit the query
-        #try:
-        session.commit()
-        return True
-        #except:
-          #  return False
+        try:
+            session.commit()
+            return True
+        except:
+            session.rollback()
+            return False
 
 
 class CreditOwner(BaseHandler):
