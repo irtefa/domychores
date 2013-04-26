@@ -30,7 +30,7 @@ class Application(tornado.web.Application):
             tornado.web.URLSpec(r'/api/chores', BrowseChores),              # GET
 
             tornado.web.URLSpec(r'/api/chores/([0-9]*)', GetChore),         # GET
-            tornado.web.URLSpec(r'/api/chores', CreateChore),               # POST
+            tornado.web.URLSpec(r'/api/chores/new', CreateChore),           # POST
             tornado.web.URLSpec(r'/api/chores/([0-9]*)', RemoveChore),      # DELETE
 
             tornado.web.URLSpec(r'/api/chore/([0-9]*)', AcceptChore),      # PUT
